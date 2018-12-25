@@ -13,6 +13,7 @@ var treeView = {
             weight: 111,
             next: {
               weight: 0,
+              next: null
             }
           }
         }
@@ -37,6 +38,7 @@ var treeView = {
                     weight: 10,
                     next: {
                       weight: 9,
+                      next: null
                     }
                   }
                 }
@@ -58,6 +60,7 @@ var treeView = {
                     weight: 19,
                     next: {
                       weight: 20,
+                      next: null
                     }
                   }
                 }
@@ -79,6 +82,7 @@ var treeView = {
                         weight: 7,
                         next: {
                           weight: 1,
+                          next: null
                         }
                       }
                     }
@@ -100,6 +104,7 @@ var treeView = {
                         weight: 13,
                         next: {
                           weight: 0,
+                          next: null
                         }
                       }
                     }
@@ -120,6 +125,7 @@ var treeView = {
                 weight: 0,
                 next: {
                   weight: 6,
+                  next: null
                 }
               }
             }
@@ -141,6 +147,7 @@ var treeView = {
                 weight: 11,
                 next: {
                   weight: 9,
+                  next: null
                 }
               }
             }
@@ -162,6 +169,7 @@ var treeView = {
                 weight: 0,
                 next: {
                   weight: 6,
+                  next: null
                 }
               }
             }
@@ -208,7 +216,7 @@ function sortArray(arr) {
 }
 
 //Выкидываем из массива лишние листья, которые не соответствуют условию
-function seperateArray(array) {
+function splitArray(array) {
   var arrayLength = array.length;
   for (var i = 0; i < arrayLength - 1; i++) {
     if (weightLeafs <= W) {
@@ -224,8 +232,8 @@ function seperateArray(array) {
 //Функция добавления нового узла однонаправленного списка
 function addNode(value) {
   var currentNode = this.unidirectionalList;
-  
-  if (!currentNode) {    
+
+  if (!currentNode) {
     return this.unidirectionalList = value;
   }
 
@@ -248,16 +256,17 @@ function formUnidirectionalList(array) {
 }
 
 //Заполняем дерево отсортированными данными с учетом суммы коэффициента W
-function prepareTree(tree) {
-  var arrayForSort = new getPlainArray(tree.leafs);
+function prepareTreeNode(node) {
+  var arrayForSort = new getPlainArray(node.leafs);
   arrayForSort = arrayForSort.concat(diffArray);
-  var sortedArray = new sortArray(arrayForSort);
-  sortedArray = seperateArray(sortedArray);
-  tree.leafs = formUnidirectionalList(sortedArray);
+  var sortedArray = new sortArray(arrayForSort);  
+  sortedArray = splitArray(sortedArray);  
+  node.leafs = formUnidirectionalList(sortedArray);
+  return node;
 }
 
 function sortTreeView(tree) {
-  prepareTree(tree);
+  prepareTreeNode(tree);
 
   var temp = tree;
   while (temp.arr && temp.arr.length) {
@@ -269,6 +278,7 @@ function sortTreeView(tree) {
   if (tree[KEY_NAME] === ROOT_NAME) {
     console.log(tree);
   }
+    return tree;
 }
 
 sortTreeView(treeView);
